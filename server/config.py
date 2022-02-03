@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import os
 import redis
-
+from datetime import timedelta
 
 load_dotenv()
 
@@ -16,3 +16,5 @@ class ApplicationConfig:
     SESSION_PERMANENT = False
     SESSION_USE_SIGNER = True
     SESSION_REDIS = redis.from_url("redis://127.0.0.1:6379")
+    JWT_SECRET_KEY = "necr0927345ntygw87opt907ehpg"
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=1)

@@ -1,21 +1,26 @@
 import React, {useState} from 'react';
 import httpClients from '../httpClients';
 import {Link} from 'react-router-dom';
+import AppContext from '../context/User/UserContext';
+
+
 
 
 const LoginPage = props => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+
     const loginUser = async () => {
-        httpClients.post("//localhost:5000/login", {
+        httpClients.post("//172.24.41.232:8080/login", {
             email,
             password,
         }).then((resp) => {
-            props.setLoggedIn(true)
-        }).catch(() => {
-            props.setLoggedIn(false)
-            console.log("Invalid credentials")
+            sessionStorage.setItem('token', resp.data.access_token)
+            props.setToken(resp.data.access_token)
+        }).catch((e) => {
+            props.setToken('')
+            alert('Credenciales Invalidas')
         })
     };
 

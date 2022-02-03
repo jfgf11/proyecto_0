@@ -30,7 +30,7 @@ export default function EventDetail(props) {
 
     const modificarEvento = async () => {
         
-        httpClients.put('//localhost:5000/event/'+props.selectedEvent.id,{
+        httpClients.put('//172.24.41.232:8080/event/'+props.selectedEvent.id,{
             nombre: nombre,
             lugar: lugar,
             direccion: direccion,
@@ -38,6 +38,10 @@ export default function EventDetail(props) {
             fecha_fin: fecha_fin,
             presencial: presencial,
             categoria: categoria
+        },{
+            headers: {
+              'Authorization': "Bearer " + props.token
+            }
         }).then(()=>{
             props.setDeletedElement(!props.deletedElement)
         }).catch(() =>{
@@ -48,7 +52,7 @@ export default function EventDetail(props) {
 
     const crearEvento = async () => {
         
-        httpClients.post('//localhost:5000/events/1',{
+        httpClients.post('//172.24.41.232:8080/events/1',{
             nombre: nombre,
             lugar: lugar,
             direccion: direccion,
@@ -56,10 +60,14 @@ export default function EventDetail(props) {
             fecha_fin: fecha_fin,
             presencial: presencial,
             categoria: categoria
+        },{
+            headers: {
+              'Authorization': "Bearer " + props.token
+            }
         }).then(()=>{
             props.setDeletedElement(!props.deletedElement)
         }).catch(() =>{
-            console.log('Error al Crear')
+            alert('Error al crear evento, llene todos los campos')
         })
     }
 
@@ -80,7 +88,7 @@ export default function EventDetail(props) {
 
                 <div class="field">
                     <label>Categoría</label>
-                    <select value={categoria} onChange={(e)=>{setCategoria(e.target.value)}}>
+                    <select value={categoria} onChange={(e)=>{setCategoria(e.target.value)}} style={{cursor: 'pointer'}}>
                         <option value='Conferencia'>Conferencia</option>
                         <option value='Seminario'>Seminario</option>
                         <option value='Congreso'>Congreso</option>

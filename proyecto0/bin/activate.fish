@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/jfgf11/Documents/Cloud_Computing/Proyecto_0/proyecto0"
+set -gx VIRTUAL_ENV "/home/jf.gaviria/Cloud_Computing/Proyectos/proyecto_0/proyecto0"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
@@ -52,14 +52,14 @@ if test -z "$VIRTUAL_ENV_DISABLE_PROMPT"
         set -l old_status $status
 
         # Prompt override?
-        if test -n "(proyecto0) "            
+        if test -n "(proyecto0) "
             printf "%s%s" "(proyecto0) " (set_color normal)
         else
             # ...Otherwise, prepend env
             set -l _checkbase (basename "$VIRTUAL_ENV")
             if test $_checkbase = "__"
                 # special case for Aspen magic directories
-                # see http://www.zetadev.com/software/aspen/
+                # see https://aspen.io/
                 printf "%s[%s]%s " (set_color -b blue white) (basename (dirname "$VIRTUAL_ENV")) (set_color normal)
             else
                 printf "%s(%s)%s" (set_color -b blue white) (basename "$VIRTUAL_ENV") (set_color normal)

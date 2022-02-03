@@ -5,34 +5,42 @@ import RegisterPage from "./components/RegisterPage";
 import httpClients from "./httpClients";
 import EventsHandler from "./components/EventsHandler";
 
+// Context
+
+
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
   const [userInfo, setUserInfo] = useState(null)
-  
+  const [token, setToken] = useState('')
 
-  useEffect(()=>{
-    httpClients.get('//localhost:5000/@me').then((response)=>{
-      setLoggedIn(true);
+  useEffect( ()=>{
+    const newToken = sessionStorage.getItem('token')
+    if (newToken && newToken != "" && newToken != undefined) setToken(newToken)
+    httpClients.get('//172.24.41.232:8080/@me', {
+      headers: {
+        'Authorization': "Bearer " + newToken
+      }
+    }).then((response)=>{
       setUserInfo(response.data)
     }).catch((e)=>{
-      setLoggedIn(false);
       setUserInfo(null);
     })
-  }, [loggedIn]);
+  }, [token]);
 
 
 
   return (
+    
     <div className={'container_center'}>
-      {loggedIn===false?(
+      {token==='' || token===undefined || !token?( 
         <BrowserRouter>
-          <Route path="/" exact render={() => <LoginPage setLoggedIn={setLoggedIn}/>}/>
-          <Route path='/register' exact render = {() => <RegisterPage setLoggedIn={setLoggedIn}/>}/>
+          <Route path="/" exact render={() => <LoginPage setToken={setToken}/>}/>
+          <Route path='/register' exact render = {() => <RegisterPage setToken={setToken}/>}/>
           {/* <Route exact component={NotFound}/> */}
         </BrowserRouter>
       ):
         <BrowserRouter>
-          <Route path="/" render={() => <EventsHandler setLoggedIn={setLoggedIn} userInfo={userInfo}/>}/>
+          <Route path="/" render={() => <EventsHandler token={token} setToken={setToken} userInfo={userInfo}/>}/>
         </BrowserRouter>
     }
     </div>

@@ -10,10 +10,15 @@ export default function EventsHandler(props) {
     const [deletedElement, setDeletedElement] = useState(false)
 
     const cerrarSesion = async () =>{
-        httpClients.post('//localhost:5000/logout').then(() =>{
-            props.setLoggedIn(false)
+        httpClients.post('//172.24.41.232:8080/logout',{},{
+            headers: {
+              'Authorization': "Bearer " + props.token
+            }
+        }).then(() =>{
+            props.setToken('')
+            sessionStorage.setItem('token', '')
         }).catch((error)=>{
-            console.log('error al cerrar sesión')
+            alert('Error cerrando sesión')
         })
     }
 
@@ -34,11 +39,11 @@ export default function EventsHandler(props) {
             <div className='ui row'>
                 <div className= 'ui segment eight wide column'>
                     <h4 class="ui dividing header">Lista de Eventos</h4>
-                    <EventsList setSelectedEvent ={setSelectedEvent} deletedElement={deletedElement} setDeletedElement={setDeletedElement} userInfo={props.userInfo}/>
+                    <EventsList setSelectedEvent ={setSelectedEvent} deletedElement={deletedElement} setDeletedElement={setDeletedElement} userInfo={props.userInfo} token={props.token}/>
                 </div>
                 <div className = 'eight wide column'>
-                    <EventDetail selectedEvent={selectedEvent} deletedElement={deletedElement} setDeletedElement={setDeletedElement}/>
-                    <h3 onClick={() => cerrarSesion()} className='ui right aligned header'>
+                    <EventDetail selectedEvent={selectedEvent} deletedElement={deletedElement} setDeletedElement={setDeletedElement} token={props.token}/>
+                    <h3 onClick={() => cerrarSesion()} className='ui right aligned header' style={{ cursor: 'pointer'}}>
                         <i className="log out icon"></i>
                         Cerrar Sesión
                     </h3>

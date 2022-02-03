@@ -5,7 +5,11 @@ export default function EventItem(props) {
     var event = props.event
 
     const deleteEvent = async () => {
-        httpClients.delete('//localhost:5000/event/'+event.id).then(()=>{
+        httpClients.delete('//172.24.41.232:8080/event/'+event.id,{
+            headers: {
+              'Authorization': "Bearer " + props.token
+            }
+        }).then(()=>{
             props.setDeletedElement(!props.deletedElement)
         }).catch(() =>{
             console.log('Error deleted')

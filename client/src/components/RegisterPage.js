@@ -5,25 +5,26 @@ import {useHistory} from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 
-const RegisterPage = () => {
+const RegisterPage = (props) => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
     const [lastName, setLastName] = useState("");
 
-    const history = useHistory();
 
-    const registerUser = async (props) => {
-        httpClients.post("//localhost:5000/registro", {
+    const registerUser = async () => {
+        httpClients.post("//172.24.41.232:8080/registro", {
             "email" : email,
             "password" : password,
             "name" : name,
             "lastName" : lastName
         }).then((resp)=>{
-            props.setLoggedIn(true)
+            sessionStorage.setItem('token', resp.data.access_token)
+            props.setToken(resp.data.access_token)
         }).catch(()=>{
-            console.log("Error at register")
+            props.setToken('')
+            alert('Error creando usuario')
         })
     };
 
@@ -52,14 +53,14 @@ const RegisterPage = () => {
                     </div>
                     <div className="field">
                         <label>Contraseña</label>
-                        <input onChange={(e) => setPassword(e.target.value)} value={password} type="text" name="last-name" placeholder="Contraseña"/>
+                        <input type="password" onChange={(e) => setPassword(e.target.value)} value={password} type="text" name="last-name" placeholder="Contraseña"/>
                     </div>
                     <div className='ui segment'>
                         <div className='field'>
-                            <button onClick={() => registerUser()} className="ui center aligned button" type="submit">Registrarse</button>
+                            <button onClick={()=>registerUser()} className="ui center aligned button" type='button'>Registrarse</button>
                         </div>
                         <div className='ui right aligned'>
-                            <Link to='/'><button onClick={() => registerUser()} className="ui center aligned button" type="submit">Atras</button></Link>
+                            <Link to='/'><button  className="ui center aligned button" type="submit">Atras</button></Link>
                         </div>
                         
                     </div>

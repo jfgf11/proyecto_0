@@ -7,3 +7,4 @@ redis
 flask-cors
 flask_marshmallow
 flask_restful
+Flask-JWT-Extended
